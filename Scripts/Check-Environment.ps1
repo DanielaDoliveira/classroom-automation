@@ -1,7 +1,7 @@
 function Invoke-CheckEnvironment {
     Write-Host "[1/3] Verificando ambiente..." -ForegroundColor Cyan
 
-    # 1. Validacao de Internet
+    # Validacao de Internet
     # Usando google.com para testar conectividade e DNS simultaneamente
     $internet = Test-Connection -ComputerName "google.com" -Count 1 -Quiet -ErrorAction SilentlyContinue
 
@@ -15,7 +15,7 @@ function Invoke-CheckEnvironment {
     }
     Write-Host "  > Conexao com internet: OK" -ForegroundColor Gray
 
-    # 2. Ajuste de Permissoes (Bypass de Seguranca)
+    # Ajuste de Permissoes (Bypass de Seguranca)
     try {
         # Define a politica para o usuario atual e para o processo em execucao
         Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
@@ -24,7 +24,7 @@ function Invoke-CheckEnvironment {
         # Se falhar aqui, a verificacao abaixo confirmara o estado real
     }
 
-    # 3. VERIFICACAO: O Bypass funcionou?
+    # Verificacao do bypass
     $currentPolicy = Get-ExecutionPolicy
     
     # Lista de politicas permitidas para prosseguir
