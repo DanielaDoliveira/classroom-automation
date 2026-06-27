@@ -1,3 +1,6 @@
+
+ [PT-BR](README.pt.md) | ENG-US
+
 ## Classroom Environment Provisioning Pipeline
 > Infrastructure-as-Code (IaC) Solution for Windows-based Educational Environments.
 
@@ -43,5 +46,18 @@ I engineered a lightweight, "one-click" automation pipeline using PowerShell and
 ---
   
 ### Documentation & Accessibility
-* **Multilingual Approach:** While this Readme is described in English for professional documentation, all scripts are **fully commented in Portuguese**. 
-* **Maintainability:** This ensures that local instructors, lab technicians, and students can easily understand, audit, and modify the logic, regardless of their English proficiency.
+*  Comments on code in Portuguese for Maintainability of project. 
+
+* This ensures that local instructors, lab technicians, and students can easily understand, audit, and modify the logic, regardless of their English proficiency.
+
+---
+
+## Changelog
+
+### v1.1.0
+- **Code Documentation:** All scripts (`Launcher.bat`, `Main.ps1`, `Check-Environment.ps1`, `Install-Tools.ps1`, `Setup-Workspace.ps1`) received a full documentation pass.
+- Inline comments rewritten for technical clarity, covering architectural decisions, non-obvious PowerShell behaviors, and maintainability rationale.
+- All script comments written in Portuguese for local instructor and lab technician accessibility.
+- **README:** Added Portuguese translation (`README.pt.md`) and changelog section.
+### v1.0.0
+- Initial release: automated provisioning pipeline for classroom environments.

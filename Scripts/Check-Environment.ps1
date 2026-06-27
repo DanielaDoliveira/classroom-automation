@@ -1,8 +1,33 @@
+# ============================================================
+# Check-Environment.ps1 — Fase 1: Validação de Pré-requisitos
+# Função: garantir que as condições mínimas para o
+# provisionamento existam ANTES de tentar instalar qualquer coisa.
+#
+# Validações executadas em sequência:
+#   1. Conectividade com a internet (rede + resolução de DNS)
+#   2. ExecutionPolicy do PowerShell (ajuste + confirmação)
+#
+# Princípio: falha rápida e explícita — se qualquer verificação
+# falhar, o pipeline para imediatamente com uma mensagem
+# acionável (melhor falhar aqui do que no meio de uma instalação).
+# ============================================================
+
 function Invoke-CheckEnvironment {
     Write-Host "[1/3] Verificando ambiente..." -ForegroundColor Cyan
 
-    # Validacao de Internet
-    # Usando google.com para testar conectividade e DNS simultaneamente
+    
+    # ------------------------------------------------------------
+    # VALIDAÇÃO 1 — Conectividade com a Internet
+    # Test-Connection envia um ping para "google.com", testando
+    # simultaneamente duas coisas:
+    #   - Conectividade de rede (o pacote chega até a internet)
+    #   - Resolução de DNS (o nome "google.com" é traduzido para IP)
+    #
+    # -Count 1    → uma única tentativa é suficiente para o diagnóstico
+    # -Quiet      → retorna apenas $true/$false, sem output no terminal
+    # -ErrorAction SilentlyContinue → suprime erros de timeout,
+    #   evitando mensagens vermelhas confusas antes do nosso aviso.
+    # ------------------------------------------------------------
     $internet = Test-Connection -ComputerName "google.com" -Count 1 -Quiet -ErrorAction SilentlyContinue
 
     if (!$internet) {
@@ -15,16 +40,47 @@ function Invoke-CheckEnvironment {
     }
     Write-Host "  > Conexao com internet: OK" -ForegroundColor Gray
 
-    # Ajuste de Permissoes (Bypass de Seguranca)
+    # ------------------------------------------------------------
+    # VALIDAÇÃO 2 — ExecutionPolicy do PowerShell
+    #
+    # Por padrão, o Windows bloqueia a execução de scripts .ps1
+    # (política "Restricted"). Precisamos de pelo menos "RemoteSigned"
+    # para rodar scripts locais sem assinatura digital.
+    #
+    # Aplicamos dois escopos de forma intencional e complementar:
+    #
+    #   CurrentUser → persiste para sessões futuras deste usuário,
+    #                 evitando que o bloqueio volte na próxima aula.
+    #
+    #   Process     → Bypass apenas para este processo em execução,
+    #                 sem alterar a política global da máquina —
+    #                 princípio de menor privilégio.
+    #
+    # O try/catch silencioso é intencional: em máquinas com GPO
+    # (Group Policy) corporativa, o Set-ExecutionPolicy pode ser
+    # bloqueado pelo domínio. A verificação logo abaixo confirma
+    # o estado real independente do sucesso aqui.
+    # ------------------------------------------------------------
     try {
-        # Define a politica para o usuario atual e para o processo em execucao
+       
         Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
         Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
     } catch {
-        # Se falhar aqui, a verificacao abaixo confirmara o estado real
+         # Falha silenciosa intencional — o resultado real é lido
+        # por Get-ExecutionPolicy logo abaixo, não por esta atribuição.
     }
 
-    # Verificacao do bypass
+      # ------------------------------------------------------------
+    # CONFIRMAÇÃO DO ESTADO REAL DA POLÍTICA
+    # Get-ExecutionPolicy sem -Scope retorna a política efetiva
+    # para o processo atual — o valor que o PowerShell realmente
+    # vai usar para decidir se executa ou não os próximos scripts.
+    #
+    # Políticas aceitas pelo pipeline:
+    #   Bypass       - sem restrições (definido no escopo Process acima)
+    #   Unrestricted - permite tudo com aviso para scripts remotos
+    #   RemoteSigned - permite scripts locais sem assinatura (mínimo seguro)
+    # ------------------------------------------------------------
     $currentPolicy = Get-ExecutionPolicy
     
     # Lista de politicas permitidas para prosseguir
