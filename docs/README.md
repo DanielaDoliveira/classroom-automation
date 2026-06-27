@@ -1,5 +1,5 @@
 
- [PT-BR](README.pt.md) | ENG-US
+ [PT-BR](Readme.pt.md) | ENG-US
 
 ## Classroom Environment Provisioning Pipeline
 > Infrastructure-as-Code (IaC) Solution for Windows-based Educational Environments.
