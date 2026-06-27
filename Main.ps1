@@ -1,6 +1,6 @@
 # 
 # ============================================================
-# Main.ps1 — Orquestrador principal do pipeline
+# Main.ps1 - Orquestrador principal do pipeline
 # Função: carregar os módulos e coordenar a execução
 # das três fases do provisionamento na ordem correta.
 # Contém apenas composição e sequência.Não tem lógica de negócio.
@@ -10,11 +10,11 @@
 #----------------------------------------------------------
 # CARREGAMENTO DOS MÓDULOS (Dot-Sourcing)
 # O operador "." (dot-source) carrega cada script no escopo
-# atual, tornando suas funções disponíveis neste contexto.
+# atual, tornando suas funções disponíveis neste contexto.H
 
 # $PSScriptRoot garante que o caminho seja sempre relativo
 # à localização do Main.ps1, independente de onde o script
-# for chamado — evitando erros de "arquivo não encontrado"
+# for chamado - evitando erros de "arquivo não encontrado"
 # quando executado a partir do Launcher.bat.
 #---------------------------------------------------------
 
@@ -33,7 +33,7 @@ Write-Host "   Criado por: Prof Daniela DOliveira" -ForegroundColor Magenta
 Write-Host "========================================" -ForegroundColor Magenta
 
 #-----------------------------------------------------------------
-# PIPELINE DE EXECUÇÃO — 3 fases em sequência obrigatória:
+# PIPELINE DE EXECUÇÃO - 3 fases em sequência obrigatória:
 #
 #   1. Check-Environment  - valida conectividade e pré-requisitos
 #   2. Install-Tools      - provisiona VS Code, Node.js e Nodemon
