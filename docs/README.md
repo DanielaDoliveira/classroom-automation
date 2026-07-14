@@ -2,7 +2,7 @@
  [PT-BR](Readme.pt.md) | ENG-US
 
 ## Classroom Environment Provisioning Pipeline
-> Infrastructure-as-Code (IaC) Solution for Windows-based Educational Environments.
+> Infrastructure Solution for Windows-based Educational Environments.
 
 ---
 ### The Problem (Production Constraints)
